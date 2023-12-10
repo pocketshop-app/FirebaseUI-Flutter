@@ -245,9 +245,9 @@ Widget _dataTableBuilder({
   return MaterialApp(
     home: FirestoreDataTable(
       query: query,
-      columnLabels: {
-        ColumnKey.firstName.name: const Text('First Name'),
-        ColumnKey.address.name: const Text('Address'),
+      columns: {
+        ColumnKey.firstName.name: const DataColumn(label: Text('First Name')),
+        ColumnKey.address.name: const DataColumn(label: Text('Address')),
       },
       cellBuilder: cellBuilder,
       enableDefaultCellEditor: enableDefaultCellEditor,

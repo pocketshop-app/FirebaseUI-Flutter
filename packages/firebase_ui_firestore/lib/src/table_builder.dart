@@ -61,7 +61,7 @@ class FirestoreDataTable extends StatefulWidget {
   const FirestoreDataTable({
     super.key,
     required this.query,
-    required this.columnLabels,
+    required this.columns,
     this.header,
     this.onError,
     this.canDeleteItems = true,
@@ -70,7 +70,7 @@ class FirestoreDataTable extends StatefulWidget {
     this.sortAscending = true,
     @Deprecated(
       'Migrate to use dataRowMinHeight and dataRowMaxHeight instead. '
-      'This feature was deprecated after v3.7.0-5.0.pre.',
+          'This feature was deprecated after v3.7.0-5.0.pre.',
     )
     double? dataRowHeight,
     double? dataRowMinHeight,
@@ -90,7 +90,7 @@ class FirestoreDataTable extends StatefulWidget {
     this.onTapCell,
     this.onSelectedRows,
   })  : assert(
-          columnLabels is LinkedHashMap,
+          columns is LinkedHashMap,
           'only LinkedHashMap are supported as header',
         ),
         dataRowMinHeight =
@@ -116,7 +116,11 @@ class FirestoreDataTable extends StatefulWidget {
   final bool canDeleteItems;
 
   /// The columns and their labels based on the property name in Firestore
-  final Map<String, Widget> columnLabels;
+  final Map<String, DataColumn> columns;
+
+  Map<String, Widget> get columnLabels {
+    return columns.map((key, value) => MapEntry(key, value.label));
+  }
 
   /// When specified, will be called whenever an interaction with Firestore failed,
   /// when as when trying to delete an item without the proper rights.
@@ -212,16 +216,15 @@ class FirestoreDataTable extends StatefulWidget {
   final Color? arrowHeadColor;
 
   /// Horizontal margin around the checkbox, if it is displayed.
-  ///
-  /// If null, then [horizontalMargin] is used as the margin between the edge
-  /// of the table and the checkbox, as well as the margin between the checkbox
-  /// and the content in the first data column. This value defaults to 24.0.
-  final double? checkboxHorizontalMargin;
+///
+/// If null, then [horizontalMargin] is used as the margin between the edge
+/// of the table and the checkbox, as well as the margin between the checkbox
+/// and the content in the first data column. This value defaults to 24.0.
+final double? checkboxHorizontalMargin;
 
-  @override
-  // ignore: library_private_types_in_public_api
-  _FirestoreTableState createState() => _FirestoreTableState();
-}
+@override
+// ignore: library_private_types_in_public_api
+_FirestoreTableState createState() => _FirestoreTableState();}
 
 class _FirestoreTableState extends State<FirestoreDataTable> {
   late Query<Map<String, Object?>> _query;
@@ -312,8 +315,8 @@ class _FirestoreTableState extends State<FirestoreDataTable> {
                           : (widget.header ?? const SizedBox()),
                       actions: actions.isEmpty ? null : actions,
                       columns: [
-                        for (final head in widget.columnLabels.values)
-                          DataColumn(label: head)
+                        for (final dataColumn in widget.columns.values)
+                          dataColumn
                       ],
                     );
                   },

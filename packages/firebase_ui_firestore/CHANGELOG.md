@@ -1,3 +1,7 @@
+## 1.5.16
+
+- Change Widget to DataColumn for columns in FirestoreDataTable
+
 ## 1.5.15
 
  - Update a dependency to the latest release.
