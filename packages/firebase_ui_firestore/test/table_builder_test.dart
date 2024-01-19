@@ -134,7 +134,7 @@ Future<void> main() async {
         _dataTableBuilder(
           query: collection,
           cellBuilder: _defaultCellBuilder,
-          onTapCell: (doc, value, colKey) async {
+          onTapCell: (doc, model, value, colKey) async {
             final person = Person.fromMap(doc.data());
             when(bobSnapshot.data()).thenReturn(
               person
@@ -216,6 +216,7 @@ Future<void> main() async {
 
 Widget _defaultCellBuilder(
   QueryDocumentSnapshot<Map<String, Object?>> doc,
+  Object? model,
   String colKey,
 ) {
   final person = Person.fromMap(doc.data());

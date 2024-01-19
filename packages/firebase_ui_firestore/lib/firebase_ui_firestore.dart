@@ -13,4 +13,10 @@ export 'src/query_builder.dart'
         FirestoreQueryBuilderSnapshotBuilder;
 
 export 'src/table_builder.dart'
-    show FirestoreDataTable, OnSelectedRows, OnTapCell, CellBuilder;
+    show
+        FirestoreDataTable,
+        OnSelectedRows,
+        OnTapCell,
+        CellBuilder,
+        FirestoreConverter,
+        ConverterExtensions;

@@ -43,11 +43,13 @@ import 'query_builder.dart';
 
 typedef CellBuilder = Widget Function(
   QueryDocumentSnapshot<Map<String, Object?>> snapshot,
+  Object? model,
   String colKey,
 );
 
-typedef OnTapCell = void Function(
+typedef OnTapCell = void Function<X>(
   QueryDocumentSnapshot<Map<String, Object?>> snapshot,
+  X? model,
   Object? value,
   String propertyName,
 );
@@ -56,13 +58,14 @@ typedef OnSelectedRows = void Function(
   List<QueryDocumentSnapshot<Map<String, Object?>>> items,
 );
 
-class FirestoreDataTable extends StatefulWidget {
+class FirestoreDataTable<T> extends StatefulWidget {
   /// {@macro firebase_ui.firestore_table}
   const FirestoreDataTable({
     super.key,
     required this.query,
     required this.columns,
     this.header,
+    this.converter,
     this.onError,
     this.canDeleteItems = true,
     this.actions,
@@ -70,7 +73,7 @@ class FirestoreDataTable extends StatefulWidget {
     this.sortAscending = true,
     @Deprecated(
       'Migrate to use dataRowMinHeight and dataRowMaxHeight instead. '
-          'This feature was deprecated after v3.7.0-5.0.pre.',
+      'This feature was deprecated after v3.7.0-5.0.pre.',
     )
     double? dataRowHeight,
     double? dataRowMinHeight,
@@ -111,6 +114,8 @@ class FirestoreDataTable extends StatefulWidget {
 
   /// The firestore query that will be displayed
   final Query<Object?> query;
+
+  final FirestoreConverter<T>? converter;
 
   /// Whether documents can be removed from firestore using the table.
   final bool canDeleteItems;
@@ -216,26 +221,40 @@ class FirestoreDataTable extends StatefulWidget {
   final Color? arrowHeadColor;
 
   /// Horizontal margin around the checkbox, if it is displayed.
-///
-/// If null, then [horizontalMargin] is used as the margin between the edge
-/// of the table and the checkbox, as well as the margin between the checkbox
-/// and the content in the first data column. This value defaults to 24.0.
-final double? checkboxHorizontalMargin;
+  ///
+  /// If null, then [horizontalMargin] is used as the margin between the edge
+  /// of the table and the checkbox, as well as the margin between the checkbox
+  /// and the content in the first data column. This value defaults to 24.0.
+  final double? checkboxHorizontalMargin;
 
-@override
+  @override
 // ignore: library_private_types_in_public_api
-_FirestoreTableState createState() => _FirestoreTableState();}
+  _FirestoreTableState createState() => _FirestoreTableState();
+}
 
-class _FirestoreTableState extends State<FirestoreDataTable> {
+class _FirestoreTableState<X> extends State<FirestoreDataTable<X>> {
   late Query<Map<String, Object?>> _query;
 
-  late final source = _Source(
+  late final source = _Source<X>(
     getHeaders: () => widget.columnLabels,
     getOnError: () => widget.onError,
+    converter: widget.converter,
     selectionEnabled: selectionEnabled,
     rowsPerPage: widget.rowsPerPage,
     enableDefaultEditor: widget.enableDefaultCellEditor,
-    onTapCell: widget.onTapCell ?? defaultOnEditItem,
+    onTapCell: <X>(
+      QueryDocumentSnapshot<Map<String, Object?>> snapshot,
+      X? model,
+      Object? value,
+      String propertyName,
+    ) {
+      OnTapCell? onTap = (widget).onTapCell;
+      if (onTap != null) {
+        onTap(snapshot, model as X, value, propertyName);
+      } else {
+        defaultOnEditItem(snapshot, model, value, propertyName);
+      }
+    },
     builder: widget.cellBuilder,
     onSelectedRows: widget.onSelectedRows,
   );
@@ -249,7 +268,7 @@ class _FirestoreTableState extends State<FirestoreDataTable> {
   }
 
   @override
-  void didUpdateWidget(covariant FirestoreDataTable oldWidget) {
+  void didUpdateWidget(covariant FirestoreDataTable<X> oldWidget) {
     super.didUpdateWidget(oldWidget);
     source.selectionEnabled = selectionEnabled;
     if (widget.query != oldWidget.query) {
@@ -329,8 +348,24 @@ class _FirestoreTableState extends State<FirestoreDataTable> {
     );
   }
 
+  Future<void> defaultOnTapCell(
+    QueryDocumentSnapshot<Map<String, Object?>> snapshot,
+    dynamic model,
+    Object? value,
+    String propertyName,
+  ) async {
+    // type '(QueryDocumentSnapshot<Map<String, Object?>>, User?, Object?, String) => void' is not a subtype of type '((QueryDocumentSnapshot<Map<String, Object?>>, dynamic, Object?, String) => void)?'
+    OnTapCell? onTap = (widget).onTapCell;
+    if (onTap != null) {
+      onTap(snapshot, model as X, value, propertyName);
+    } else {
+      defaultOnEditItem(snapshot, model, value, propertyName);
+    }
+  }
+
   Future<void> defaultOnEditItem(
     QueryDocumentSnapshot<Map<String, Object?>> snapshot,
+    Object? model,
     Object? value,
     String propertyName,
   ) async {
@@ -663,6 +698,7 @@ enum _PropertyType {
 
 abstract class _FormState {
   const _FormState();
+
   _PropertyType? get type;
 
   _Edit submit(DocumentReference ref) => throw UnimplementedError();
@@ -816,10 +852,11 @@ class _ReferenceFormState extends _FormState {
 /// not modifying the property at all.
 class _Edit {
   _Edit(this.newValue);
+
   final Object? newValue;
 }
 
-class _Source extends DataTableSource {
+class _Source<Y> extends DataTableSource {
   _Source({
     required this.getHeaders,
     required this.getOnError,
@@ -827,6 +864,7 @@ class _Source extends DataTableSource {
     required int rowsPerPage,
     required this.enableDefaultEditor,
     required this.onTapCell,
+    this.converter,
     this.builder,
     this.onSelectedRows,
   })  : _selectionEnabled = selectionEnabled,
@@ -837,9 +875,12 @@ class _Source extends DataTableSource {
   final bool enableDefaultEditor;
   final OnTapCell onTapCell;
   final OnSelectedRows? onSelectedRows;
+  final FirestoreConverter? converter;
 
   int _rowsPerpage;
+
   int get rowsPerPage => _rowsPerpage;
+
   set rowsPerPage(int value) {
     if (value != _rowsPerpage) {
       _rowsPerpage = value;
@@ -848,7 +889,9 @@ class _Source extends DataTableSource {
   }
 
   bool _selectionEnabled;
+
   bool get selectionEnabled => _selectionEnabled;
+
   set selectionEnabled(bool value) {
     if (value != _selectionEnabled) {
       _selectionEnabled = value;
@@ -894,6 +937,7 @@ class _Source extends DataTableSource {
 
     final doc = _previousSnapshot!.docs[index];
     final data = doc.data();
+    final model = converter?.fromFirestore(doc, null);
 
     return DataRow.byIndex(
       index: index,
@@ -917,11 +961,12 @@ class _Source extends DataTableSource {
       cells: [
         for (final head in getHeaders().keys)
           DataCell(
-            builder?.call(doc, head) ?? _ValueView(data[head]),
+            builder?.call(doc, model, head) ?? _ValueView(data[head]),
             onTap: enableDefaultEditor
                 ? () {
-                    onTapCell(
+                    onTapCell<Y>(
                       doc,
+                      model as Y?,
                       data[head],
                       head,
                     );
@@ -1011,5 +1056,26 @@ class _ValueView extends StatelessWidget {
     } else {
       return Text(value.toString());
     }
+  }
+}
+
+class FirestoreConverter<R> {
+  final FromFirestore<R> fromFirestore;
+  final ToFirestore<R> toFirestore;
+
+  FirestoreConverter({
+    required this.fromFirestore,
+    required this.toFirestore,
+  });
+}
+
+extension ConverterExtensions on CollectionReference {
+  CollectionReference<R> withFirestoreConverter<R extends Object?>(
+      FirestoreConverter<R> converter) {
+    return withConverter<R>(
+      fromFirestore: (snapshot, options) =>
+          converter.fromFirestore(snapshot, options),
+      toFirestore: (user, options) => converter.toFirestore(user, options),
+    );
   }
 }
