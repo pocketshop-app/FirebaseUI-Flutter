@@ -1,4 +1,4 @@
-// Copyright 2023, the Chromium project authors.  Please see the AUTHORS file
+// Copyright 2024, the Chromium project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 import '../default_localizations.dart';
@@ -197,8 +197,7 @@ class ArLocalizations extends FirebaseUILocalizationLabels {
   String get signInText => "تسجيل الدخول";
 
   @override
-  String get signInWithAppleButtonText =>
-      "تسجيل الدخول باستخدام حساب على Apple";
+  String get signInWithAppleButtonText => "تسجيل الدخول باستخدام Apple";
 
   @override
   String get signInWithEmailLinkSentText =>
@@ -340,4 +339,7 @@ class ArLocalizations extends FirebaseUILocalizationLabels {
 
   @override
   String get confirmDeleteAccountButtonLabel => "Yes, delete";
+
+  @override
+  String get sendVerificationEmailLabel => "Send verification email";
 }

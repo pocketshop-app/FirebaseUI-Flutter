@@ -3,6 +3,255 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-04-24
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`firebase_ui_auth` - `v1.14.0`](#firebase_ui_auth---v1140)
+ - [`firebase_ui_localizations` - `v1.11.0`](#firebase_ui_localizations---v1110)
+ - [`firebase_ui_oauth` - `v1.5.2`](#firebase_ui_oauth---v152)
+ - [`firebase_ui_oauth_apple` - `v1.2.20`](#firebase_ui_oauth_apple---v1220)
+ - [`firebase_ui_oauth_twitter` - `v1.2.20`](#firebase_ui_oauth_twitter---v1220)
+ - [`firebase_ui_oauth_facebook` - `v1.2.20`](#firebase_ui_oauth_facebook---v1220)
+ - [`firebase_ui_oauth_google` - `v1.3.2`](#firebase_ui_oauth_google---v132)
+ - [`firebase_ui_database` - `v1.4.3`](#firebase_ui_database---v143)
+ - [`firebase_ui_firestore` - `v1.6.3`](#firebase_ui_firestore---v163)
+ - [`firebase_ui_storage` - `v2.0.4`](#firebase_ui_storage---v204)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `firebase_ui_oauth` - `v1.5.2`
+ - `firebase_ui_oauth_apple` - `v1.2.20`
+ - `firebase_ui_oauth_twitter` - `v1.2.20`
+ - `firebase_ui_oauth_facebook` - `v1.2.20`
+ - `firebase_ui_oauth_google` - `v1.3.2`
+ - `firebase_ui_database` - `v1.4.3`
+ - `firebase_ui_firestore` - `v1.6.3`
+ - `firebase_ui_storage` - `v2.0.4`
+
+---
+
+#### `firebase_ui_auth` - `v1.14.0`
+
+ - **FIX**(auth): `ForgotPasswordScreen` display email within input box ([#336](https://github.com/firebase/FirebaseUI-Flutter/issues/336)). ([ad666666](https://github.com/firebase/FirebaseUI-Flutter/commit/ad666666b05c637d5bdf4d041c29a1eeac63d528))
+ - **FIX**(firebase_ui_auth): `sendPasswordResetEmail` should not be executed when `isLoading=true` ([#315](https://github.com/firebase/FirebaseUI-Flutter/issues/315)). ([955e5c28](https://github.com/firebase/FirebaseUI-Flutter/commit/955e5c286ea5835defe0bd922428102e98f9e8d7))
+ - **FIX**(ui_auth): Fixed a momentary form display after signing in with EmailLinkAuth. ([#318](https://github.com/firebase/FirebaseUI-Flutter/issues/318)). ([3e37d143](https://github.com/firebase/FirebaseUI-Flutter/commit/3e37d1435a4df12c41b9dd857cec67848b2af2c3))
+ - **FIX**(firebase_ui_localizations): expose all Firebase UI localizations for overriding ([#309](https://github.com/firebase/FirebaseUI-Flutter/issues/309)). ([e4567478](https://github.com/firebase/FirebaseUI-Flutter/commit/e4567478205f2b88b54aa21af6429fb1c7c81564))
+ - **FEAT**(firebase_ui_auth): add `showPasswordVisibilityToggle` to `RegisterScreen` ([#297](https://github.com/firebase/FirebaseUI-Flutter/issues/297)). ([6ec3ec1e](https://github.com/firebase/FirebaseUI-Flutter/commit/6ec3ec1edf584fe9f94142ceb7fbdeac57846678))
+ - **FEAT**(firebase_ui_localizations): support for `sendVerificationEmailLabel()` label ([#280](https://github.com/firebase/FirebaseUI-Flutter/issues/280)). ([95be915d](https://github.com/firebase/FirebaseUI-Flutter/commit/95be915d162c6fb5dfdc6a8ad3298c2002d38dbf))
+ - **DOCS**: Added superkey to example widget ([#326](https://github.com/firebase/FirebaseUI-Flutter/issues/326)). ([dd5507e1](https://github.com/firebase/FirebaseUI-Flutter/commit/dd5507e1953d9095a60e4cc127d0b8e72790a4ce))
+
+#### `firebase_ui_localizations` - `v1.11.0`
+
+ - **FIX**(ui_localizations): In the Japanese file, change "login" to "sign and improve translations ([#304](https://github.com/firebase/FirebaseUI-Flutter/issues/304)). ([ae01e9f1](https://github.com/firebase/FirebaseUI-Flutter/commit/ae01e9f13dbd4d5b357c1124be39f9cc44ccb9ee))
+ - **FIX**(firebase_ui_localizations): expose all Firebase UI localizations for overriding ([#309](https://github.com/firebase/FirebaseUI-Flutter/issues/309)). ([e4567478](https://github.com/firebase/FirebaseUI-Flutter/commit/e4567478205f2b88b54aa21af6429fb1c7c81564))
+ - **FEAT**(firebase_ui_localizations): support for `sendVerificationEmailLabel()` label ([#280](https://github.com/firebase/FirebaseUI-Flutter/issues/280)). ([95be915d](https://github.com/firebase/FirebaseUI-Flutter/commit/95be915d162c6fb5dfdc6a8ad3298c2002d38dbf))
+
+
+## 2024-02-28
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`firebase_ui_oauth` - `v1.5.1`](#firebase_ui_oauth---v151)
+ - [`firebase_ui_oauth_facebook` - `v1.2.19`](#firebase_ui_oauth_facebook---v1219)
+ - [`firebase_ui_oauth_twitter` - `v1.2.19`](#firebase_ui_oauth_twitter---v1219)
+ - [`firebase_ui_auth` - `v1.13.1`](#firebase_ui_auth---v1131)
+ - [`firebase_ui_oauth_google` - `v1.3.1`](#firebase_ui_oauth_google---v131)
+ - [`firebase_ui_oauth_apple` - `v1.2.19`](#firebase_ui_oauth_apple---v1219)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `firebase_ui_oauth_facebook` - `v1.2.19`
+ - `firebase_ui_oauth_twitter` - `v1.2.19`
+ - `firebase_ui_auth` - `v1.13.1`
+ - `firebase_ui_oauth_google` - `v1.3.1`
+ - `firebase_ui_oauth_apple` - `v1.2.19`
+
+---
+
+#### `firebase_ui_oauth` - `v1.5.1`
+
+ - **FIX**(auth): `desktopSignIn()` method required in web mixin ([#294](https://github.com/firebase/FirebaseUI-Flutter/issues/294)). ([65568934](https://github.com/firebase/FirebaseUI-Flutter/commit/655689344bbf4fc7e8a6911ce67a3ce896079235))
+
+
+## 2024-02-06
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`firebase_ui_auth` - `v1.13.0`](#firebase_ui_auth---v1130)
+ - [`firebase_ui_localizations` - `v1.10.2`](#firebase_ui_localizations---v1102)
+ - [`firebase_ui_oauth` - `v1.5.0`](#firebase_ui_oauth---v150)
+ - [`firebase_ui_oauth_google` - `v1.3.0`](#firebase_ui_oauth_google---v130)
+ - [`firebase_ui_oauth_facebook` - `v1.2.18`](#firebase_ui_oauth_facebook---v1218)
+ - [`firebase_ui_oauth_twitter` - `v1.2.18`](#firebase_ui_oauth_twitter---v1218)
+ - [`firebase_ui_oauth_apple` - `v1.2.18`](#firebase_ui_oauth_apple---v1218)
+ - [`firebase_ui_firestore` - `v1.6.2`](#firebase_ui_firestore---v162)
+ - [`firebase_ui_database` - `v1.4.2`](#firebase_ui_database---v142)
+ - [`firebase_ui_storage` - `v2.0.3`](#firebase_ui_storage---v203)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `firebase_ui_oauth_facebook` - `v1.2.18`
+ - `firebase_ui_oauth_twitter` - `v1.2.18`
+ - `firebase_ui_oauth_apple` - `v1.2.18`
+ - `firebase_ui_firestore` - `v1.6.2`
+ - `firebase_ui_storage` - `v2.0.3`
+
+---
+
+#### `firebase_ui_auth` - `v1.13.0`
+
+ - **FEAT**(ui_auth): use google_sign_in on macOS ([#255](https://github.com/firebase/FirebaseUI-Flutter/issues/255)). ([72571a0d](https://github.com/firebase/FirebaseUI-Flutter/commit/72571a0dd20181cabfc1f63d52e903e754399496))
+
+#### `firebase_ui_localizations` - `v1.10.2`
+
+ - **FIX**(ui_localizations): Add missing generated translation file. ([ca15feb6](https://github.com/firebase/FirebaseUI-Flutter/commit/ca15feb69b0d1699fc21f831ddbb1e8f87795e9b))
+ - **FIX**: Arabic translation of Sign In With Apple button label. ([085dc6de](https://github.com/firebase/FirebaseUI-Flutter/commit/085dc6de7090d4eb85f8d3953b5e9c037e35541a))
+
+#### `firebase_ui_oauth` - `v1.5.0`
+
+ - **FEAT**(ui_auth): use google_sign_in on macOS ([#255](https://github.com/firebase/FirebaseUI-Flutter/issues/255)). ([72571a0d](https://github.com/firebase/FirebaseUI-Flutter/commit/72571a0dd20181cabfc1f63d52e903e754399496))
+
+#### `firebase_ui_oauth_google` - `v1.3.0`
+
+ - **FEAT**(ui_auth): use google_sign_in on macOS ([#255](https://github.com/firebase/FirebaseUI-Flutter/issues/255)). ([72571a0d](https://github.com/firebase/FirebaseUI-Flutter/commit/72571a0dd20181cabfc1f63d52e903e754399496))
+
+#### `firebase_ui_database` - `v1.4.2`
+
+ - **FIX**:(firebase_ui_database): Perform list operations in correct order ([213](https://github.com/firebase/FirebaseUI-Flutter/pull/213))
+
+## 2024-01-09
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`firebase_ui_firestore` - `v1.6.1`](#firebase_ui_firestore---v161)
+ - [`firebase_ui_localizations` - `v1.10.1`](#firebase_ui_localizations---v1101)
+ - [`firebase_ui_auth` - `v1.12.1`](#firebase_ui_auth---v1121)
+ - [`firebase_ui_storage` - `v2.0.2`](#firebase_ui_storage---v202)
+ - [`firebase_ui_database` - `v1.4.1`](#firebase_ui_database---v141)
+ - [`firebase_ui_oauth` - `v1.4.17`](#firebase_ui_oauth---v1417)
+ - [`firebase_ui_oauth_facebook` - `v1.2.17`](#firebase_ui_oauth_facebook---v1217)
+ - [`firebase_ui_oauth_twitter` - `v1.2.17`](#firebase_ui_oauth_twitter---v1217)
+ - [`firebase_ui_oauth_apple` - `v1.2.17`](#firebase_ui_oauth_apple---v1217)
+ - [`firebase_ui_oauth_google` - `v1.2.17`](#firebase_ui_oauth_google---v1217)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `firebase_ui_auth` - `v1.12.1`
+ - `firebase_ui_storage` - `v2.0.2`
+ - `firebase_ui_database` - `v1.4.1`
+ - `firebase_ui_oauth` - `v1.4.17`
+ - `firebase_ui_oauth_facebook` - `v1.2.17`
+ - `firebase_ui_oauth_twitter` - `v1.2.17`
+ - `firebase_ui_oauth_apple` - `v1.2.17`
+ - `firebase_ui_oauth_google` - `v1.2.17`
+
+---
+
+#### `firebase_ui_firestore` - `v1.6.1`
+
+ - **FIX**(ui_firestore): null-assert count for aggregate query ([#246](https://github.com/firebase/FirebaseUI-Flutter/issues/246)). ([8afbe368](https://github.com/firebase/FirebaseUI-Flutter/commit/8afbe36824ec481055dcbf0558e0611bab712553))
+
+#### `firebase_ui_localizations` - `v1.10.1`
+
+ - **FIX**: Update translation strings in RO for confirm account deletion ([#219](https://github.com/firebase/FirebaseUI-Flutter/issues/219)). ([704b34ea](https://github.com/firebase/FirebaseUI-Flutter/commit/704b34ea174ecf3a78357de0236156f4d17a6ba5))
+
+
+## 2024-01-04
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`firebase_ui_auth` - `v1.12.0`](#firebase_ui_auth---v1120)
+ - [`firebase_ui_database` - `v1.4.0`](#firebase_ui_database---v140)
+ - [`firebase_ui_firestore` - `v1.6.0`](#firebase_ui_firestore---v160)
+ - [`firebase_ui_localizations` - `v1.10.0`](#firebase_ui_localizations---v1100)
+ - [`firebase_ui_oauth` - `v1.4.16`](#firebase_ui_oauth---v1416)
+ - [`firebase_ui_oauth_twitter` - `v1.2.16`](#firebase_ui_oauth_twitter---v1216)
+ - [`firebase_ui_oauth_facebook` - `v1.2.16`](#firebase_ui_oauth_facebook---v1216)
+ - [`firebase_ui_oauth_apple` - `v1.2.16`](#firebase_ui_oauth_apple---v1216)
+ - [`firebase_ui_oauth_google` - `v1.2.16`](#firebase_ui_oauth_google---v1216)
+ - [`firebase_ui_storage` - `v2.0.1`](#firebase_ui_storage---v201)
+
+Packages with dependency updates only:
+
+> Packages listed below depend on other packages in this workspace that have had changes. Their versions have been incremented to bump the minimum dependency versions of the packages they depend upon in this project.
+
+ - `firebase_ui_oauth` - `v1.4.16`
+ - `firebase_ui_oauth_twitter` - `v1.2.16`
+ - `firebase_ui_oauth_facebook` - `v1.2.16`
+ - `firebase_ui_oauth_apple` - `v1.2.16`
+ - `firebase_ui_oauth_google` - `v1.2.16`
+ - `firebase_ui_storage` - `v2.0.1`
+
+---
+
+#### `firebase_ui_auth` - `v1.12.0`
+
+ - **FIX**(ui_auth): correctly handle phone auth in showReauthenticateDialog ([#209](https://github.com/firebase/FirebaseUI-Flutter/issues/209)). ([c0612cfd](https://github.com/firebase/FirebaseUI-Flutter/commit/c0612cfd71dc5ea2448ba73882b39a9766b97a98))
+ - **FIX**(ui_auth): deprecate email enumeration protection affected APIs ([#210](https://github.com/firebase/FirebaseUI-Flutter/issues/210)). ([eed65674](https://github.com/firebase/FirebaseUI-Flutter/commit/eed656748caa12eb31d7a9677a16bf6b1d129b77))
+ - **FEAT**(ui_auth): add a way to get an AuthController for AuthState ([#207](https://github.com/firebase/FirebaseUI-Flutter/issues/207)). ([0816bfd4](https://github.com/firebase/FirebaseUI-Flutter/commit/0816bfd4a1acfbe390d9725d48892b0831e99679))
+
+#### `firebase_ui_database` - `v1.4.0`
+
+ - **FEAT**(firebase_ui_database): Allow reversing the database query ([#193](https://github.com/firebase/FirebaseUI-Flutter/issues/193)). ([0588812b](https://github.com/firebase/FirebaseUI-Flutter/commit/0588812beac550afcf8dba2cabde28f258a90ed1))
+
+#### `firebase_ui_firestore` - `v1.6.0`
+
+ - **FEAT**(ui_firestore): implemented separators and fetching indicator ([#99](https://github.com/firebase/FirebaseUI-Flutter/issues/99)). ([d8d8bf59](https://github.com/firebase/FirebaseUI-Flutter/commit/d8d8bf594273618e866545172e57c10409f3a78f))
+
+#### `firebase_ui_localizations` - `v1.10.0`
+
+ - **FEAT**(ui_localizations): Add Norwegian (NB) localization ([#191](https://github.com/firebase/FirebaseUI-Flutter/issues/191)). ([715ab1b8](https://github.com/firebase/FirebaseUI-Flutter/commit/715ab1b8ab7df536da50177e75d6d0632ecdf83c))
+
+
 ## 2023-11-30
 
 ### Changes
