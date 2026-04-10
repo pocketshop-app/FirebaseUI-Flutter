@@ -3,16 +3,17 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:firebase_auth/firebase_auth.dart' as fba;
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:app_links/app_links.dart';
+import 'dart:async';
 
 /// A listener of the [EmailLinkFlow] lifecycle.
 abstract class EmailLinkAuthListener extends AuthListener {
   /// Called when the link being is sent to the user's [email].
   void onBeforeLinkSent(String email);
 
-  /// Called when the link was sucessfully sent to the [email].
+  /// Called when the link was successfully sent to the [email].
   void onLinkSent(String email);
 }
 
@@ -24,7 +25,9 @@ class EmailLinkAuthProvider
     extends AuthProvider<EmailLinkAuthListener, fba.AuthCredential> {
   /// A configuration of the dynamic link.
   final fba.ActionCodeSettings actionCodeSettings;
-  final FirebaseDynamicLinks _dynamicLinks;
+
+  final AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
 
   @override
   late EmailLinkAuthListener authListener;
@@ -42,10 +45,10 @@ class EmailLinkAuthProvider
   EmailLinkAuthProvider({
     required this.actionCodeSettings,
 
-    /// An instance of the [FirebaseDynamicLinks] that should be used to handle
-    /// the link. By default [FirebaseDynamicLinks.instance] is used.
-    FirebaseDynamicLinks? dynamicLinks,
-  }) : _dynamicLinks = dynamicLinks ?? FirebaseDynamicLinks.instance;
+    /// An instance of the [AppLinks] that should be used to handle
+    /// the link. By default [AppLinks()] is used.
+    AppLinks? appLinks,
+  }) : _appLinks = appLinks ?? AppLinks();
 
   /// Sends a link to the [email].
   void sendLink(String email) {
@@ -61,8 +64,8 @@ class EmailLinkAuthProvider
         .catchError(authListener.onError);
   }
 
-  void _onLinkReceived(String email, PendingDynamicLinkData linkData) {
-    final link = linkData.link.toString();
+  void _onLinkReceived(String email, Uri uri) {
+    final link = uri.toString();
 
     if (auth.isSignInWithEmailLink(link)) {
       authListener.onBeforeSignIn();
@@ -77,12 +80,20 @@ class EmailLinkAuthProvider
     }
   }
 
-  /// Calls [FirebaseDynamicLinks] to receive the link and perform a sign in.
+  /// Listens for incoming app links and handles email authentication.
   /// Should be called after [EmailLinkAuthListener.onLinkSent] was called.
   void awaitLink(String email) {
-    _dynamicLinks.onLink.first
-        .then((linkData) => _onLinkReceived(email, linkData))
-        .catchError(authListener.onError);
+    _linkSubscription?.cancel();
+
+    _linkSubscription = _appLinks.uriLinkStream.listen(
+      (Uri uri) => _onLinkReceived(email, uri),
+      onError: (error) => authListener.onError(error),
+    );
+  }
+
+  void dispose() {
+    _linkSubscription?.cancel();
+    _linkSubscription = null;
   }
 
   void _signInWithEmailLink(String email, String link) {

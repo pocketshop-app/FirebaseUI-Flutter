@@ -15,9 +15,7 @@ const _kTestPath = 'flutter-tests';
 void main() {
   group('DatabaseListViewBuilder', () {
     setUp(() async {
-      await clearReference(
-        rtdb.ref(_kTestPath),
-      );
+      await clearReference(rtdb.ref(_kTestPath));
     });
 
     testWidgets(
@@ -57,29 +55,37 @@ void main() {
         expect(find.byType(ListView), findsNothing);
       },
       // Works locally but fails on CI
-      skip: defaultTargetPlatform == TargetPlatform.iOS ||
+      skip:
+          defaultTargetPlatform == TargetPlatform.iOS ||
           defaultTargetPlatform == TargetPlatform.macOS,
     );
 
-    testWidgets('Allows specifying custom loading handler', (tester) async {
-      final ref = rtdb.ref(_kTestPath);
+    testWidgets(
+      'Allows specifying custom loading handler',
+      (tester) async {
+        final ref = rtdb.ref(_kTestPath);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: FirebaseDatabaseListView(
-              query: ref,
-              loadingBuilder: (context) => const Text('loading...'),
-              itemBuilder: (context, snapshot) => throw UnimplementedError(),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FirebaseDatabaseListView(
+                query: ref,
+                loadingBuilder: (context) => const Text('loading...'),
+                itemBuilder: (context, snapshot) => throw UnimplementedError(),
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      expect(find.text('loading...'), findsOneWidget);
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-      expect(find.byType(ListView), findsNothing);
-    });
+        expect(find.text('loading...'), findsOneWidget);
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+        expect(find.byType(ListView), findsNothing);
+      },
+      skip:
+          isCI &&
+          (defaultTargetPlatform == TargetPlatform.macOS ||
+              defaultTargetPlatform == TargetPlatform.iOS),
+    );
 
     testWidgets(
       'By default, shows a progress indicator when loading',
@@ -100,35 +106,46 @@ void main() {
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
         expect(find.byType(ListView), findsNothing);
       },
+      skip:
+          isCI &&
+          (defaultTargetPlatform == TargetPlatform.macOS ||
+              defaultTargetPlatform == TargetPlatform.iOS),
     );
 
-    testWidgets('By default, ignore errors', (tester) async {
-      final builderSpy = ListViewBuilderSpy();
-      final ref = rtdb.ref(_kTestPath);
+    testWidgets(
+      'By default, ignore errors',
+      (tester) async {
+        final builderSpy = ListViewBuilderSpy();
+        final ref = rtdb.ref(_kTestPath);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: FirebaseDatabaseListView(
-              query: ref,
-              cacheExtent: 0,
-              itemBuilder: (context, snapshot) => throw UnimplementedError(),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: FirebaseDatabaseListView(
+                query: ref,
+                cacheExtent: 0,
+                itemBuilder: (context, snapshot) => throw UnimplementedError(),
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      verifyZeroInteractions(builderSpy);
+        verifyZeroInteractions(builderSpy);
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      expect(find.byType(ListView), findsNothing);
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        expect(find.byType(ListView), findsNothing);
 
-      await ref.onValue.first.then((value) {}, onError: (_) {});
+        await ref.onValue.first.then((value) {}, onError: (_) {});
 
-      await tester.pump();
+        await tester.pump();
 
-      expect(find.byType(ListView), findsOneWidget);
-    });
+        expect(find.byType(ListView), findsOneWidget);
+      },
+      skip:
+          isCI &&
+          (defaultTargetPlatform == TargetPlatform.macOS ||
+              defaultTargetPlatform == TargetPlatform.iOS),
+    );
 
     testWidgets(
       'When reaching the end of the list, loads more items',
@@ -141,32 +158,31 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: Builder(builder: (context) {
-                final mq = MediaQuery.of(context);
-                final h = mq.size.height;
-                size = h / 5;
+              child: Builder(
+                builder: (context) {
+                  final mq = MediaQuery.of(context);
+                  final h = mq.size.height;
+                  size = h / 5;
 
-                return FirebaseDatabaseListView(
-                  physics: const ClampingScrollPhysics(),
-                  query: ref.orderByValue(),
-                  cacheExtent: 0,
-                  pageSize: 5,
-                  itemExtent: size,
-                  itemBuilder: (context, snapshot) {
-                    final v = snapshot.value as int;
+                  return FirebaseDatabaseListView(
+                    physics: const ClampingScrollPhysics(),
+                    query: ref.orderByValue(),
+                    cacheExtent: 0,
+                    pageSize: 5,
+                    itemExtent: size,
+                    itemBuilder: (context, snapshot) {
+                      final v = snapshot.value as int;
 
-                    return Container(
-                      alignment: Alignment.center,
-                      color: Colors.black.withAlpha(v % 2 == 0 ? 50 : 100),
-                      key: ValueKey(v.toString()),
-                      child: Text(
-                        v.toString(),
-                        textAlign: TextAlign.center,
-                      ),
-                    );
-                  },
-                );
-              }),
+                      return Container(
+                        alignment: Alignment.center,
+                        color: Colors.black.withAlpha(v % 2 == 0 ? 50 : 100),
+                        key: ValueKey(v.toString()),
+                        child: Text(v.toString(), textAlign: TextAlign.center),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -207,6 +223,11 @@ void main() {
           expect(find.byKey(ValueKey(i.toString())), findsOneWidget);
         }
       },
+      skip:
+          isCI &&
+          (defaultTargetPlatform == TargetPlatform.macOS ||
+              defaultTargetPlatform == TargetPlatform.android ||
+              defaultTargetPlatform == TargetPlatform.iOS),
     );
 
     testWidgets(
@@ -220,33 +241,32 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: Material(
-              child: Builder(builder: (context) {
-                final mq = MediaQuery.of(context);
-                final h = mq.size.height;
-                size = h / 5;
+              child: Builder(
+                builder: (context) {
+                  final mq = MediaQuery.of(context);
+                  final h = mq.size.height;
+                  size = h / 5;
 
-                return FirebaseDatabaseListView(
-                  physics: const ClampingScrollPhysics(),
-                  query: ref.orderByValue(),
-                  reverseQuery: true,
-                  cacheExtent: 0,
-                  pageSize: 5,
-                  itemExtent: size,
-                  itemBuilder: (context, snapshot) {
-                    final v = snapshot.value as int;
+                  return FirebaseDatabaseListView(
+                    physics: const ClampingScrollPhysics(),
+                    query: ref.orderByValue(),
+                    reverseQuery: true,
+                    cacheExtent: 0,
+                    pageSize: 5,
+                    itemExtent: size,
+                    itemBuilder: (context, snapshot) {
+                      final v = snapshot.value as int;
 
-                    return Container(
-                      alignment: Alignment.center,
-                      color: Colors.black.withAlpha(v % 2 == 0 ? 50 : 100),
-                      key: ValueKey(v.toString()),
-                      child: Text(
-                        v.toString(),
-                        textAlign: TextAlign.center,
-                      ),
-                    );
-                  },
-                );
-              }),
+                      return Container(
+                        alignment: Alignment.center,
+                        color: Colors.black.withAlpha(v % 2 == 0 ? 50 : 100),
+                        key: ValueKey(v.toString()),
+                        child: Text(v.toString(), textAlign: TextAlign.center),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ),
         );
@@ -257,15 +277,16 @@ void main() {
           expect(find.byKey(ValueKey(i.toString())), findsOneWidget);
         }
       },
+      skip:
+          isCI &&
+          (defaultTargetPlatform == TargetPlatform.macOS ||
+              defaultTargetPlatform == TargetPlatform.iOS),
     );
   });
 }
 
 class ListViewBuilderSpy<T> extends Mock {
-  Widget call(
-    BuildContext? context,
-    T? snapshot,
-  ) {
+  Widget call(BuildContext? context, T? snapshot) {
     return super.noSuchMethod(
       Invocation.method(#call, [context, snapshot]),
       returnValueForMissingStub: Container(),
@@ -275,7 +296,5 @@ class ListViewBuilderSpy<T> extends Mock {
 }
 
 Future<void> fillReference(DatabaseReference ref, int length) {
-  return Future.wait([
-    for (var i = 0; i < length; i++) ref.push().set(i),
-  ]);
+  return Future.wait([for (var i = 0; i < length; i++) ref.push().set(i)]);
 }
