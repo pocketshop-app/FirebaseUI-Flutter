@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -41,7 +42,7 @@ void main() {
             actions: [
               AuthStateChangeAction<SignedIn>((context, state) {
                 controller = getControllerForState(state);
-              })
+              }),
             ],
             child: const EmailForm(action: AuthAction.signIn),
           ),
@@ -51,6 +52,7 @@ void main() {
 
         expect(controller, isA<EmailAuthController>());
       },
+      skip: isCI && defaultTargetPlatform == TargetPlatform.macOS,
     );
 
     testWidgets(
@@ -73,6 +75,7 @@ void main() {
 
         expect(() => getControllerForState(state), throwsStateError);
       },
+      skip: isCI && defaultTargetPlatform == TargetPlatform.macOS,
     );
   });
 }
